@@ -7,6 +7,8 @@ from app.schemas.newsletter_schema import newsletterRequest,newsletterResponse,n
 from app.db.session import get_db
 from sqlalchemy.orm import Session
 from app.services.cloudinary_service import upload_file
+from app.schemas.committee_schema import memberRequest,currentcommitteeResponse,addmembershipRequest,memberAdminResponse,memberAdminDetailResponse
+from app.controllers.admin.member_admin_controller import get_all_members_controller,create_member_controller,update_member_controller,delete_member_controller,add_membership_to_member_controller,get_member_controller,delete_membership_by_id_controller
 
 router=APIRouter()
 
@@ -59,3 +61,32 @@ async def upload_media(
 ):
     url = upload_file(file, folder)
     return {"url": url}
+
+
+@router.get("/members",response_model=list[memberAdminResponse])
+async def get_all_members(db:Session=Depends(get_db),current_user:str=Depends(require_admin)):
+    return await get_all_members_controller(db)
+
+@router.get("/members/{member_id}",response_model=memberAdminDetailResponse)
+async def get_member(db:Session=Depends(get_db),member_id:int=None,current_user:str=Depends(require_admin)):
+    return await get_member_controller(db,member_id)
+
+@router.post("/members")
+async def create_member(member_request:memberRequest,db:Session=Depends(get_db),current_user:str=Depends(require_admin)):
+    return await create_member_controller(db,member_request)
+
+@router.put("/members/{member_id}")
+async def update_member(member_request:memberRequest,db:Session=Depends(get_db),member_id:int=None,current_user:str=Depends(require_admin)):
+    return await update_member_controller(db,member_id,member_request)
+
+@router.delete("/members/{member_id}")
+async def delete_member(db:Session=Depends(get_db),member_id:int=None,current_user:str=Depends(require_admin)):
+    return await delete_member_controller(db,member_id)
+
+@router.delete("/memberships/{membership_id}")
+async def delete_membership(db:Session=Depends(get_db),membership_id:int=None,current_user:str=Depends(require_admin)):
+    return await delete_membership_by_id_controller(db,membership_id)
+
+@router.post("/members/{member_id}/memberships")
+async def add_membership_to_member(membership_data:addmembershipRequest,db:Session=Depends(get_db),member_id:int=None,current_user:str=Depends(require_admin)):
+    return await add_membership_to_member_controller(db,member_id,membership_data)
