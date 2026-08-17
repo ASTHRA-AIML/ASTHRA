@@ -5,6 +5,7 @@ class newsletterResponse(BaseModel):
     id:int
     title:str
     cover_image_url:str
+    newsletter_date:date
 
     class Config:
         from_attributes=True

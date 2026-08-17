@@ -7,8 +7,8 @@ from app.schemas.newsletter_schema import newsletterRequest
 async def get_all_newsletters(db:Session,sort_by:str="id"):
     query=db.query(newsletters)
     sort_column=getattr(newsletters,sort_by,newsletters.id)
-    newsletters=(query.order_by(desc(sort_column)).all())
-    return newsletters
+    results=(query.order_by(desc(sort_column)).all())
+    return results
 
 async def get_newsletter(db:Session,newsletter_id:int):
     query=db.query(newsletters).filter(newsletters.id==newsletter_id).first()
