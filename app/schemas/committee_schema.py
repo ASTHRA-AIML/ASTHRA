@@ -64,11 +64,18 @@ class memberAdminDetailResponse(BaseModel):
 
 
 class currentcommitteeResponse(BaseModel):
-    id:int
-    name:str
-    photo_url:str
-    linkedin_url:str
-    memberships: list[membershipResponse] = []
+    id: int
+    name: str
+    photo_url: str | None = None
+    linkedin_url: str | None = None
+    position: str
 
     class config:
-        from_attributes=True
+        from_attributes = True
+
+class allcommitteeResponse(BaseModel):
+    acadamic_year: str
+    members: list[currentcommitteeResponse]
+
+    class config:
+        from_attributes = True

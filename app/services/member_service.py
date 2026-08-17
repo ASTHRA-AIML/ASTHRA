@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session, joinedload
 from app.models.member import members
 from app.models.membership import memberships
 from datetime import datetime
-from app.schemas.committee_schema import memberRequest,addmembershipRequest, allmembersResponse, currentcommitteeResponse
+from app.schemas.committee_schema import memberRequest,addmembershipRequest, currentcommitteeResponse
 from fastapi import HTTPException
 
 
@@ -60,25 +60,36 @@ async def current_committee(db:Session,date:str):
 
 
 async def get_all_committee(db: Session):
-    # Sort by academic year ascending: oldest academic year first
+    # Sort by academic year descending: most recent academic year first
     committee_list = (
         db.query(memberships)
         .options(joinedload(memberships.member))
-        .order_by(memberships.acadamic_year.asc())
+        .order_by(memberships.acadamic_year.desc())
         .all()
     )
     
-    result = []
+    grouped = {}
     for m in committee_list:
         if m.member:
-            result.append({
+            year = m.acadamic_year
+            if year not in grouped:
+                grouped[year] = []
+            
+            grouped[year].append({
                 "id": m.member.id,
                 "name": m.member.name,
                 "photo_url": m.member.photo_url,
                 "position": m.position,
-                "linkedin_url": m.member.linkedin_url,
-                "acadamic_year": m.acadamic_year
+                "linkedin_url": m.member.linkedin_url
             })
+            
+    result = [
+        {
+            "acadamic_year": year,
+            "members": members_list
+        }
+        for year, members_list in grouped.items()
+    ]
     return result
 
 

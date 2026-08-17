@@ -73,7 +73,7 @@ department-website-backend/
 │   │   ├── newsletter_service.py    # (to be created)
 │   │   ├── member_service.py        # (to be created)
 │   │   ├── cloudinary_service.py
-│   │   └── auth_service.py          # (to be created)
+│   │   
 │   │
 │   └── scripts/
 │       └── seed_admin.py            # one-off script to seed the admins table
