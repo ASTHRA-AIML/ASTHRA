@@ -1,24 +1,20 @@
 // ─── App.jsx — Root router ──────────────────────────────────────────────────
-// Routes:
-//   Public  →  /, /activities, /activities/:id, /newsletters, /newsletters/:id, /committee
-//   Admin   →  /admin/login, /admin/dashboard, /admin/activities,
-//               /admin/newsletters, /admin/committee
+// Admin Routes:
+//   /admin/login, /admin/dashboard, /admin/activities,
+//   /admin/newsletters, /admin/committee
+// Public Routes:
+//   /* (All non-admin routes render the winning UI/UX PublicApp)
 
+import React, { Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ToastProvider } from './context/ToastContext';
 
-// ── Layouts ──────────────────────────────────────────────────────────────────
-import PublicLayout  from './components/layout/PublicLayout';
-import AdminLayout   from './components/layout/AdminLayout';
+// ── Public App (STATIC import — testing lazy vs static for Tailwind CSS) ─────
+import PublicApp from './public/PublicApp';
 
-// ── Public pages ─────────────────────────────────────────────────────────────
-import HomePage            from './pages/public/HomePage';
-import PublicActivitiesPage    from './pages/public/ActivitiesPage';
-import ActivityDetailPage      from './pages/public/ActivityDetailPage';
-import PublicNewslettersPage   from './pages/public/NewslettersPage';
-import NewsletterDetailPage    from './pages/public/NewsletterDetailPage';
-import PublicCommitteePage     from './pages/public/CommitteePage';
+// ── Admin Layout ─────────────────────────────────────────────────────────────
+import AdminLayout from './components/layout/AdminLayout';
 
 // ── Admin pages ───────────────────────────────────────────────────────────────
 import LoginPage      from './pages/LoginPage';
@@ -42,56 +38,6 @@ function AppRoutes() {
 
   return (
     <Routes>
-      {/* ── Public pages ───────────────────────────────────────────────── */}
-      <Route
-        path="/"
-        element={
-          <PublicLayout>
-            <HomePage />
-          </PublicLayout>
-        }
-      />
-      <Route
-        path="/activities"
-        element={
-          <PublicLayout>
-            <PublicActivitiesPage />
-          </PublicLayout>
-        }
-      />
-      <Route
-        path="/activities/:id"
-        element={
-          <PublicLayout>
-            <ActivityDetailPage />
-          </PublicLayout>
-        }
-      />
-      <Route
-        path="/newsletters"
-        element={
-          <PublicLayout>
-            <PublicNewslettersPage />
-          </PublicLayout>
-        }
-      />
-      <Route
-        path="/newsletters/:id"
-        element={
-          <PublicLayout>
-            <NewsletterDetailPage />
-          </PublicLayout>
-        }
-      />
-      <Route
-        path="/committee"
-        element={
-          <PublicLayout>
-            <PublicCommitteePage />
-          </PublicLayout>
-        }
-      />
-
       {/* ── Admin: Login (unprotected) ─────────────────────────────────── */}
       <Route
         path="/admin/login"
@@ -120,12 +66,15 @@ function AppRoutes() {
         element={<ProtectedRoute><CommitteePage /></ProtectedRoute>}
       />
 
-      {/* ── Legacy redirects (in case old /login bookmark exists) ─────── */}
+      {/* ── Legacy redirects ────────────────────────────────────────────── */}
       <Route path="/login" element={<Navigate to="/admin/login" replace />} />
       <Route path="/dashboard" element={<Navigate to="/admin/dashboard" replace />} />
 
-      {/* ── Default: unknown routes → public home ─────────────────────── */}
-      <Route path="*" element={<Navigate to="/" replace />} />
+      {/* ── Public catch-all ────────────────────────────────────────────── */}
+      <Route
+        path="/*"
+        element={<PublicApp />}
+      />
     </Routes>
   );
 }

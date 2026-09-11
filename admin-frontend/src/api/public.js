@@ -5,12 +5,35 @@
 const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
 async function publicFetch(path) {
-  const res = await fetch(`${BASE_URL}${path}`);
-  if (!res.ok) {
+  try {
+    const res = await fetch(`${BASE_URL}${path}`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+      },
+    });
+
+    let data;
     const text = await res.text();
-    throw new Error(text || `${res.status} ${res.statusText}`);
+    try {
+      data = text ? JSON.parse(text) : null;
+    } catch {
+      data = null;
+    }
+
+    if (!res.ok) {
+      const message =
+        (data && (data.detail || data.message)) ||
+        text ||
+        `${res.status} ${res.statusText}`;
+      throw new Error(message);
+    }
+
+    return data;
+  } catch (err) {
+    console.error(`[Public API Error] ${path}:`, err);
+    throw err;
   }
-  return res.json();
 }
 
 // GET /asthra/activities → [{ id, title, activity_date, thumbnail_url }]
@@ -33,3 +56,7 @@ export const getPublicNewsletter = (id) =>
 // Note: "acadamic_year" is the exact backend field (intentional typo preserved).
 export const getPublicCommittee = () =>
   publicFetch('/asthra/committee');
+
+// GET /asthra/committee/current
+export const getPublicCommitteeCurrent = (date) =>
+  publicFetch(date ? `/asthra/committee/current?date=${encodeURIComponent(date)}` : '/asthra/committee/current');
