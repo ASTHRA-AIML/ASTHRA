@@ -1,15 +1,13 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import { getPublicActivities } from '../../api/public'
 import { mapActivityListItem } from '../mappers'
 import { useReveal } from '../hooks'
 import type { Activity } from '../types'
-import type { NavigateFn } from '../App'
 
-interface Props {
-  navigate: NavigateFn
-}
-
-export default function Activities({ navigate }: Props) {
+export default function Activities() {
+  const navigate = useNavigate()
   const [activitiesList, setActivitiesList] = useState<Activity[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -37,6 +35,13 @@ export default function Activities({ navigate }: Props) {
 
   return (
     <div className="min-h-screen pt-28 pb-24">
+      <Helmet>
+        <title>Activities — ASTHRA | Dept. of AIML</title>
+        <meta
+          name="description"
+          content="Browse all ASTHRA events — workshops, symposiums, technical competitions and more from the Department of Artificial Intelligence & Machine Learning."
+        />
+      </Helmet>
       {/* Page header */}
       <div className="max-w-7xl mx-auto px-6 lg:px-8 mb-16">
         <div ref={headerRef} className="reveal">
@@ -89,10 +94,10 @@ export default function Activities({ navigate }: Props) {
               <div
                 key={activity.id}
                 className={`glass glass-hover rounded-2xl overflow-hidden cursor-pointer group reveal-delay-${Math.min(i + 1, 6)}`}
-                onClick={() => navigate('activity-detail', activity)}
+                onClick={() => navigate(`/activities/${activity.id}`)}
                 role="button"
                 tabIndex={0}
-                onKeyDown={(e) => e.key === 'Enter' && navigate('activity-detail', activity)}
+                onKeyDown={(e) => e.key === 'Enter' && navigate(`/activities/${activity.id}`)}
                 aria-label={`View details for ${activity.title}`}
               >
                 {/* Image */}
@@ -124,7 +129,7 @@ export default function Activities({ navigate }: Props) {
                   )}
                   <button
                     className="btn-outline !py-2 !px-4 !text-[0.6rem] self-start mt-2"
-                    onClick={(e) => { e.stopPropagation(); navigate('activity-detail', activity) }}
+                    onClick={(e) => { e.stopPropagation(); navigate(`/activities/${activity.id}`) }}
                   >
                     View Details
                   </button>

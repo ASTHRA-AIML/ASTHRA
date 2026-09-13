@@ -1,16 +1,14 @@
 import { useEffect, useState } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import { getPublicNewsletter } from '../../api/public'
 import { mapNewsletterDetail } from '../mappers'
 import type { Newsletter } from '../types'
-import type { NavigateFn } from '../App'
 import LoadingScreen from '../components/LoadingScreen'
 
-interface Props {
-  newsletter: Newsletter
-  navigate: NavigateFn
-}
-
-export default function NewsletterDetail({ newsletter, navigate }: Props) {
+export default function NewsletterDetail() {
+  const { id } = useParams<{ id: string }>()
+  const navigate = useNavigate()
   const [detail, setDetail] = useState<Newsletter | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -19,7 +17,7 @@ export default function NewsletterDetail({ newsletter, navigate }: Props) {
     try {
       setLoading(true)
       setError(null)
-      const data = await getPublicNewsletter(newsletter.id)
+      const data = await getPublicNewsletter(id!)
       setDetail(mapNewsletterDetail(data))
     } catch (err: any) {
       console.error('Failed to load newsletter detail:', err)
@@ -30,10 +28,10 @@ export default function NewsletterDetail({ newsletter, navigate }: Props) {
   }
 
   useEffect(() => {
-    if (newsletter?.id) {
+    if (id) {
       fetchDetail()
     }
-  }, [newsletter?.id])
+  }, [id])
 
   if (loading) {
     return <LoadingScreen />
@@ -49,7 +47,7 @@ export default function NewsletterDetail({ newsletter, navigate }: Props) {
             <button onClick={fetchDetail} className="btn-primary">
               Try Again
             </button>
-            <button onClick={() => navigate('newsletters')} className="btn-outline">
+            <button onClick={() => navigate('/newsletters')} className="btn-outline">
               Back to Newsletters
             </button>
           </div>
@@ -69,8 +67,21 @@ export default function NewsletterDetail({ newsletter, navigate }: Props) {
     link.click()
   }
 
+  const metaDesc = detail.shortDescription
+    ? detail.shortDescription.slice(0, 155)
+    : detail.fullDescription
+    ? detail.fullDescription.slice(0, 155)
+    : `ASTHRA newsletter: ${detail.title}`
+
   return (
     <div className="min-h-screen pt-24">
+      <Helmet>
+        <title>{detail.title} — ASTHRA Newsletter</title>
+        <meta name="description" content={metaDesc} />
+        <meta property="og:title" content={`${detail.title} — ASTHRA`} />
+        <meta property="og:description" content={metaDesc} />
+        {detail.coverUrl && <meta property="og:image" content={detail.coverUrl} />}
+      </Helmet>
       {/* Hero */}
       <div className="relative h-[45vh] bg-[#0a1228]">
         {detail.coverUrl && (
@@ -87,7 +98,7 @@ export default function NewsletterDetail({ newsletter, navigate }: Props) {
         {/* Back */}
         <div className="absolute top-6 left-6">
           <button
-            onClick={() => navigate('newsletters')}
+            onClick={() => navigate('/newsletters')}
             className="flex items-center gap-2 glass px-4 py-2 rounded-full text-sm text-slate-300 hover:text-white transition-colors"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -179,7 +190,7 @@ export default function NewsletterDetail({ newsletter, navigate }: Props) {
               </button>
             )}
 
-            <button onClick={() => navigate('newsletters')} className="btn-outline w-full justify-center">
+            <button onClick={() => navigate('/newsletters')} className="btn-outline w-full justify-center">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M11 17l-5-5m0 0l5-5m-5 5h12" />
               </svg>

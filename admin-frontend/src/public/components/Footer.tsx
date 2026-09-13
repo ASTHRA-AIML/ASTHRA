@@ -1,11 +1,8 @@
+import { useNavigate } from 'react-router-dom'
 import logo from '../imports/a1.png'
-import type { PageName, NavigateFn } from '../App'
 
-interface Props {
-  navigate: NavigateFn
-}
-
-export default function Footer({ navigate }: Props) {
+export default function Footer() {
+  const navigate = useNavigate()
   return (
     <footer className="bg-[#020610] border-t border-cyan-400/8 relative overflow-hidden">
       {/* Subtle grid background */}
@@ -20,7 +17,7 @@ export default function Footer({ navigate }: Props) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
           {/* Brand column */}
           <div className="flex flex-col gap-5">
-            <button onClick={() => navigate('home')} className="flex items-center gap-3 group self-start focus:outline-none">
+            <button onClick={() => navigate('/')} className="flex items-center gap-3 group self-start focus:outline-none">
               <div className="w-11 h-11 rounded-full overflow-hidden bg-white/5 ring-1 ring-cyan-400/20 p-0.5 group-hover:ring-cyan-400/40 transition-all">
                 <img src={logo} alt="ASTHRA" className="w-full h-full object-contain" />
               </div>
@@ -29,7 +26,7 @@ export default function Footer({ navigate }: Props) {
               </span>
             </button>
             <p className="text-slate-500 text-sm leading-relaxed max-w-xs">
-              Department of Computer Science &amp; Engineering. Advancing technology through
+              Department of Artificial Intelligence &amp; Machine Learning. Advancing technology through
               innovation, education, and community.
             </p>
             <div className="flex gap-3 mt-1">
@@ -60,13 +57,13 @@ export default function Footer({ navigate }: Props) {
           <div>
             <h4 className="section-label mb-6">Quick Links</h4>
             <div className="flex flex-col gap-3">
-              {(['home', 'activities', 'newsletters', 'committee'] as PageName[]).map((p) => (
+              {([['/', 'Home'], ['/activities', 'Activities'], ['/newsletters', 'Newsletters'], ['/committee', 'Committee']] as [string, string][]).map(([path, label]) => (
                 <button
-                  key={p}
-                  onClick={() => navigate(p)}
+                  key={path}
+                  onClick={() => navigate(path)}
                   className="text-slate-500 hover:text-white text-sm text-left capitalize transition-colors w-fit"
                 >
-                  {p}
+                  {label}
                 </button>
               ))}
             </div>
@@ -76,7 +73,7 @@ export default function Footer({ navigate }: Props) {
           <div id="contact-section">
             <h4 className="section-label mb-6">Contact</h4>
             <div className="flex flex-col gap-3 text-slate-500 text-sm">
-              <p>Dept. of Computer Science &amp; Engineering</p>
+              <p>Dept. of Artificial Intelligence &amp; Machine Learning</p>
               <p>Engineering Block A, Room 204</p>
               <a
                 href="mailto:asthra@cse.edu"
@@ -99,7 +96,7 @@ export default function Footer({ navigate }: Props) {
         {/* Bottom bar */}
         <div className="border-t border-white/5 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="font-mono text-[0.65rem] text-slate-700 tracking-widest">
-            © 2026 ASTHRA — Dept. of Computer Science &amp; Engineering
+            © 2026 ASTHRA — Dept. of Artificial Intelligence &amp; Machine Learning
           </p>
           <p className="font-mono text-[0.65rem] text-slate-700 tracking-widest">
             Built with innovation · Driven by purpose

@@ -100,7 +100,7 @@ export default function LoadingScreen() {
             ASTHRA
           </div>
           <div className="font-mono text-[0.65rem] text-cyan-400/80 tracking-[0.25em] mt-1">
-            CSE DEPARTMENT
+            AIML DEPARTMENT
           </div>
         </div>
 

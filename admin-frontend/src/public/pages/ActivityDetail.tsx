@@ -1,16 +1,14 @@
 import { useEffect, useState } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import { getPublicActivity } from '../../api/public'
 import { mapActivityDetail } from '../mappers'
 import type { Activity } from '../types'
-import type { NavigateFn } from '../App'
 import LoadingScreen from '../components/LoadingScreen'
 
-interface Props {
-  activity: Activity
-  navigate: NavigateFn
-}
-
-export default function ActivityDetail({ activity, navigate }: Props) {
+export default function ActivityDetail() {
+  const { id } = useParams<{ id: string }>()
+  const navigate = useNavigate()
   const [detail, setDetail] = useState<Activity | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -20,7 +18,7 @@ export default function ActivityDetail({ activity, navigate }: Props) {
     try {
       setLoading(true)
       setError(null)
-      const data = await getPublicActivity(activity.id)
+      const data = await getPublicActivity(id!)
       setDetail(mapActivityDetail(data))
     } catch (err: any) {
       console.error('Failed to load activity detail:', err)
@@ -31,10 +29,10 @@ export default function ActivityDetail({ activity, navigate }: Props) {
   }
 
   useEffect(() => {
-    if (activity?.id) {
+    if (id) {
       fetchDetail()
     }
-  }, [activity?.id])
+  }, [id])
 
   if (loading) {
     return <LoadingScreen />
@@ -50,7 +48,7 @@ export default function ActivityDetail({ activity, navigate }: Props) {
             <button onClick={fetchDetail} className="btn-primary">
               Try Again
             </button>
-            <button onClick={() => navigate('activities')} className="btn-outline">
+            <button onClick={() => navigate('/activities')} className="btn-outline">
               Back to Activities
             </button>
           </div>
@@ -66,8 +64,21 @@ export default function ActivityDetail({ activity, navigate }: Props) {
   const prevPhoto = () => setLightboxIdx((i) => (i === null ? null : (i - 1 + gallery.length) % gallery.length))
   const nextPhoto = () => setLightboxIdx((i) => (i === null ? null : (i + 1) % gallery.length))
 
+  const metaDesc = detail.shortDescription
+    ? detail.shortDescription.slice(0, 155)
+    : detail.fullDescription
+    ? detail.fullDescription.slice(0, 155)
+    : `ASTHRA activity: ${detail.title}`
+
   return (
     <div className="min-h-screen pt-24">
+      <Helmet>
+        <title>{detail.title} — ASTHRA Activities</title>
+        <meta name="description" content={metaDesc} />
+        <meta property="og:title" content={`${detail.title} — ASTHRA`} />
+        <meta property="og:description" content={metaDesc} />
+        {detail.imageUrl && <meta property="og:image" content={detail.imageUrl} />}
+      </Helmet>
       {/* Hero image */}
       <div className="relative h-[50vh] md:h-[60vh] bg-[#0a1228]">
         {detail.imageUrl && (
@@ -83,7 +94,7 @@ export default function ActivityDetail({ activity, navigate }: Props) {
         {/* Back button */}
         <div className="absolute top-6 left-6">
           <button
-            onClick={() => navigate('activities')}
+            onClick={() => navigate('/activities')}
             className="flex items-center gap-2 glass px-4 py-2 rounded-full text-sm text-slate-300 hover:text-white transition-colors"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -171,7 +182,7 @@ export default function ActivityDetail({ activity, navigate }: Props) {
               </div>
             </div>
 
-            <button onClick={() => navigate('activities')} className="btn-outline w-full justify-center">
+            <button onClick={() => navigate('/activities')} className="btn-outline w-full justify-center">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M11 17l-5-5m0 0l5-5m-5 5h12" />
               </svg>

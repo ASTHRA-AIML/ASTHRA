@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet-async'
 import { getPublicCommittee } from '../../api/public'
 import { mapCommitteeYear } from '../mappers'
 import { useReveal } from '../hooks'
@@ -45,6 +46,13 @@ export default function Committee() {
 
   return (
     <div className="min-h-screen pt-28 pb-24">
+      <Helmet>
+        <title>Committee — ASTHRA | Dept. of AIML</title>
+        <meta
+          name="description"
+          content="Meet the ASTHRA committee — the student leadership team driving innovation and community in the Department of Artificial Intelligence & Machine Learning."
+        />
+      </Helmet>
       {/* Header */}
       <div className="max-w-7xl mx-auto px-6 lg:px-8 mb-16">
         <div ref={headerRef} className="reveal">

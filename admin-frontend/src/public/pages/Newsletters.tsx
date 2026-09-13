@@ -1,15 +1,13 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import { getPublicNewsletters } from '../../api/public'
 import { mapNewsletterListItem } from '../mappers'
 import { useReveal } from '../hooks'
 import type { Newsletter } from '../types'
-import type { NavigateFn } from '../App'
 
-interface Props {
-  navigate: NavigateFn
-}
-
-export default function Newsletters({ navigate }: Props) {
+export default function Newsletters() {
+  const navigate = useNavigate()
   const [newslettersList, setNewslettersList] = useState<Newsletter[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -40,6 +38,13 @@ export default function Newsletters({ navigate }: Props) {
 
   return (
     <div className="min-h-screen pt-28 pb-24">
+      <Helmet>
+        <title>Newsletter Archive — ASTHRA | Dept. of AIML</title>
+        <meta
+          name="description"
+          content="Explore the ASTHRA newsletter archive — publications covering events, student achievements, and the technology shaping tomorrow."
+        />
+      </Helmet>
       {/* Header */}
       <div className="max-w-7xl mx-auto px-6 lg:px-8 mb-16">
         <div ref={headerRef} className="reveal">
@@ -88,10 +93,10 @@ export default function Newsletters({ navigate }: Props) {
           <div ref={featuredRef} className="reveal">
             <div
               className="glass glass-hover rounded-3xl overflow-hidden cursor-pointer group flex flex-col md:flex-row"
-              onClick={() => navigate('newsletter-detail', featured)}
+              onClick={() => navigate(`/newsletters/${featured.id}`)}
               role="button"
               tabIndex={0}
-              onKeyDown={(e) => e.key === 'Enter' && navigate('newsletter-detail', featured)}
+              onKeyDown={(e) => e.key === 'Enter' && navigate(`/newsletters/${featured.id}`)}
               aria-label={`Read ${featured.title}`}
             >
               {/* Cover */}
@@ -147,10 +152,10 @@ export default function Newsletters({ navigate }: Props) {
               <div
                 key={nl.id}
                 className={`glass glass-hover rounded-2xl overflow-hidden cursor-pointer group reveal-delay-${i + 1}`}
-                onClick={() => navigate('newsletter-detail', nl)}
+                onClick={() => navigate(`/newsletters/${nl.id}`)}
                 role="button"
                 tabIndex={0}
-                onKeyDown={(e) => e.key === 'Enter' && navigate('newsletter-detail', nl)}
+                onKeyDown={(e) => e.key === 'Enter' && navigate(`/newsletters/${nl.id}`)}
                 aria-label={`Read ${nl.title}`}
               >
                 {/* Cover */}

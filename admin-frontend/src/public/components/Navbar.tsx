@@ -1,27 +1,22 @@
 import { useState, useEffect } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import logo from '../imports/a1.png'
-import type { PageName, NavigateFn } from '../App'
 
-const navItems: { label: string; page: PageName }[] = [
-  { label: 'Home', page: 'home' },
-  { label: 'Activities', page: 'activities' },
-  { label: 'Newsletters', page: 'newsletters' },
-  { label: 'Committee', page: 'committee' },
+const navItems: { label: string; path: string }[] = [
+  { label: 'Home', path: '/' },
+  { label: 'Activities', path: '/activities' },
+  { label: 'Newsletters', path: '/newsletters' },
+  { label: 'Committee', path: '/committee' },
 ]
 
-function isActive(currentPage: PageName, itemPage: PageName) {
-  if (currentPage === itemPage) return true
-  if (currentPage === 'activity-detail' && itemPage === 'activities') return true
-  if (currentPage === 'newsletter-detail' && itemPage === 'newsletters') return true
-  return false
+function isActive(pathname: string, itemPath: string) {
+  if (itemPath === '/') return pathname === '/'
+  return pathname.startsWith(itemPath)
 }
 
-interface Props {
-  currentPage: PageName
-  navigate: NavigateFn
-}
-
-export default function Navbar({ currentPage, navigate }: Props) {
+export default function Navbar() {
+  const navigate = useNavigate()
+  const { pathname } = useLocation()
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
 
@@ -32,8 +27,8 @@ export default function Navbar({ currentPage, navigate }: Props) {
   }, [])
 
   const handleContact = () => {
-    if (currentPage !== 'home') {
-      navigate('home')
+    if (pathname !== '/') {
+      navigate('/')
       setTimeout(() => {
         document.getElementById('contact-section')?.scrollIntoView({ behavior: 'smooth' })
       }, 300)
@@ -55,7 +50,7 @@ export default function Navbar({ currentPage, navigate }: Props) {
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-4 flex items-center justify-between">
           {/* Logo */}
           <button
-            onClick={() => navigate('home')}
+            onClick={() => navigate('/')}
             className="flex items-center gap-3 group focus:outline-none"
             aria-label="Go to home"
           >
@@ -71,10 +66,10 @@ export default function Navbar({ currentPage, navigate }: Props) {
           <div className="hidden md:flex items-center gap-8">
             {navItems.map((item) => (
               <button
-                key={item.page}
-                onClick={() => navigate(item.page)}
+                key={item.path}
+                onClick={() => navigate(item.path)}
                 className={`relative font-orbitron text-[0.65rem] font-500 tracking-[0.18em] transition-colors group focus:outline-none focus-visible:underline ${
-                  isActive(currentPage, item.page)
+                  isActive(pathname, item.path)
                     ? 'text-cyan-400'
                     : 'text-slate-400 hover:text-white'
                 }`}
@@ -82,7 +77,7 @@ export default function Navbar({ currentPage, navigate }: Props) {
                 {item.label}
                 <span
                   className={`absolute -bottom-1 left-0 h-px bg-gradient-to-r from-cyan-400 to-violet-500 transition-all duration-300 ${
-                    isActive(currentPage, item.page) ? 'w-full' : 'w-0 group-hover:w-full'
+                    isActive(pathname, item.path) ? 'w-full' : 'w-0 group-hover:w-full'
                   }`}
                 />
               </button>
@@ -117,10 +112,10 @@ export default function Navbar({ currentPage, navigate }: Props) {
           <div className="px-6 py-5 flex flex-col gap-5">
             {navItems.map((item) => (
               <button
-                key={item.page}
-                onClick={() => { navigate(item.page); setMobileOpen(false) }}
+                key={item.path}
+                onClick={() => { navigate(item.path); setMobileOpen(false) }}
                 className={`font-orbitron text-xs tracking-[0.18em] text-left transition-colors ${
-                  isActive(currentPage, item.page) ? 'text-cyan-400' : 'text-slate-400'
+                  isActive(pathname, item.path) ? 'text-cyan-400' : 'text-slate-400'
                 }`}
               >
                 {item.label}

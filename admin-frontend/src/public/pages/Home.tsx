@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import logo from '../imports/a1.png'
 import { getPublicActivities, getPublicNewsletters } from '../../api/public'
 import { mapActivityListItem, mapNewsletterListItem } from '../mappers'
 import { useReveal, useCounter } from '../hooks'
 import type { Activity, Newsletter } from '../types'
-import type { NavigateFn } from '../App'
 
 const CircuitBg = () => (
   <div className="absolute inset-0 overflow-hidden pointer-events-none select-none" aria-hidden="true">
@@ -47,11 +48,8 @@ function StatItem({ target, suffix, label }: { target: number; suffix: string; l
   )
 }
 
-interface Props {
-  navigate: NavigateFn
-}
-
-export default function Home({ navigate }: Props) {
+export default function Home() {
+  const navigate = useNavigate()
   const missionRef = useReveal()
   const visionRef = useReveal()
   const quoteRef = useReveal()
@@ -92,6 +90,18 @@ export default function Home({ navigate }: Props) {
 
   return (
     <div>
+      <Helmet>
+        <title>ASTHRA — Department of Artificial Intelligence &amp; Machine Learning</title>
+        <meta
+          name="description"
+          content="ASTHRA is the official association of the Department of Artificial Intelligence & Machine Learning — driving innovation through workshops, symposiums, newsletters, and community events."
+        />
+        <meta property="og:title" content="ASTHRA — Dept. of AIML" />
+        <meta
+          property="og:description"
+          content="ASTHRA is the heart of our department's technical community — advancing technology through innovation, education, and community."
+        />
+      </Helmet>
       {/* Error notification banner if backend fetch failed */}
       {error && (
         <div className="bg-red-500/10 border-b border-red-500/20 text-red-400 px-6 py-3 text-center text-xs font-mono flex items-center justify-center gap-4">
@@ -144,7 +154,7 @@ export default function Home({ navigate }: Props) {
           {/* Label */}
           <div className="animate-fade-in-up" style={{ animationDelay: '0.35s' }}>
             <span className="section-label tracking-[0.25em]">
-              Department of Computer Science &amp; Engineering
+              Department of Artificial Intelligence &amp; Machine Learning
             </span>
           </div>
 
@@ -171,13 +181,13 @@ export default function Home({ navigate }: Props) {
             className="flex flex-wrap gap-4 justify-center animate-fade-in-up"
             style={{ animationDelay: '0.75s' }}
           >
-            <button onClick={() => navigate('activities')} className="btn-primary">
+            <button onClick={() => navigate('/activities')} className="btn-primary">
               Explore Activities
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
             </button>
-            <button onClick={() => navigate('newsletters')} className="btn-outline">
+            <button onClick={() => navigate('/newsletters')} className="btn-outline">
               Read Newsletters
             </button>
           </div>
@@ -204,7 +214,7 @@ export default function Home({ navigate }: Props) {
                 cultivated together.
               </h2>
               <p className="text-slate-400 text-base leading-relaxed">
-                ASTHRA exists to empower students of Computer Science &amp; Engineering to
+                ASTHRA exists to empower students of Artificial Intelligence &amp; Machine Learning to
                 explore the full depth of their potential. Through events, workshops,
                 publications, and community building, we create an environment where
                 technical rigor and creative ambition reinforce each other.
@@ -294,7 +304,7 @@ export default function Home({ navigate }: Props) {
                 Our vision is a department synonymous with bold thinking, ethical practice,
                 and a commitment to using technology as a force for genuine human good.
               </p>
-              <button onClick={() => navigate('committee')} className="btn-outline self-start">
+              <button onClick={() => navigate('/committee')} className="btn-outline self-start">
                 Meet the Team
               </button>
             </div>
@@ -360,7 +370,7 @@ export default function Home({ navigate }: Props) {
                 </h2>
               </div>
               <button
-                onClick={() => navigate('activities')}
+                onClick={() => navigate('/activities')}
                 className="btn-outline self-start sm:self-auto shrink-0"
               >
                 View All
@@ -386,10 +396,10 @@ export default function Home({ navigate }: Props) {
                   <div
                     key={activity.id}
                     className={`glass glass-hover rounded-2xl overflow-hidden cursor-pointer group reveal-delay-${i + 1}`}
-                    onClick={() => navigate('activity-detail', activity)}
+                    onClick={() => navigate(`/activities/${activity.id}`)}
                     role="button"
                     tabIndex={0}
-                    onKeyDown={(e) => e.key === 'Enter' && navigate('activity-detail', activity)}
+                    onKeyDown={(e) => e.key === 'Enter' && navigate(`/activities/${activity.id}`)}
                     aria-label={`View details for ${activity.title}`}
                   >
                     <div className="card-image-container h-48 bg-[#0a1228]">
@@ -451,7 +461,7 @@ export default function Home({ navigate }: Props) {
                 </h2>
               </div>
               <button
-                onClick={() => navigate('newsletters')}
+                onClick={() => navigate('/newsletters')}
                 className="btn-outline self-start sm:self-auto shrink-0"
               >
                 All Issues
@@ -477,10 +487,10 @@ export default function Home({ navigate }: Props) {
                   <div
                     key={nl.id}
                     className={`glass glass-hover rounded-2xl overflow-hidden cursor-pointer group flex flex-col sm:flex-row reveal-delay-${i + 1}`}
-                    onClick={() => navigate('newsletter-detail', nl)}
+                    onClick={() => navigate(`/newsletters/${nl.id}`)}
                     role="button"
                     tabIndex={0}
-                    onKeyDown={(e) => e.key === 'Enter' && navigate('newsletter-detail', nl)}
+                    onKeyDown={(e) => e.key === 'Enter' && navigate(`/newsletters/${nl.id}`)}
                     aria-label={`Read ${nl.title}`}
                   >
                     <div className="card-image-container w-full sm:w-36 h-52 sm:h-auto shrink-0 bg-[#0a1228]">
@@ -544,10 +554,10 @@ export default function Home({ navigate }: Props) {
                 has a place for you. Come build, learn, and lead.
               </p>
               <div className="relative z-10 flex flex-wrap gap-4 justify-center">
-                <button onClick={() => navigate('activities')} className="btn-primary">
+                <button onClick={() => navigate('/activities')} className="btn-primary">
                   Browse Events
                 </button>
-                <button onClick={() => navigate('committee')} className="btn-outline">
+                <button onClick={() => navigate('/committee')} className="btn-outline">
                   Meet the Committee
                 </button>
               </div>

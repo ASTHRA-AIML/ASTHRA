@@ -1,4 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { Routes, Route, useLocation } from 'react-router-dom'
+import { HelmetProvider } from 'react-helmet-async'
 import './index.css'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
@@ -9,22 +11,18 @@ import ActivityDetail from './pages/ActivityDetail'
 import Newsletters from './pages/Newsletters'
 import NewsletterDetail from './pages/NewsletterDetail'
 import Committee from './pages/Committee'
-import type { Activity, Newsletter } from './types'
 
-export type PageName =
-  | 'home'
-  | 'activities'
-  | 'activity-detail'
-  | 'newsletters'
-  | 'newsletter-detail'
-  | 'committee'
-
-export type NavigateFn = (page: PageName, data?: Activity | Newsletter) => void
+// Scroll to top on every route change
+function ScrollToTop() {
+  const { pathname } = useLocation()
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [pathname])
+  return null
+}
 
 export default function PublicApp() {
-  const [page, setPage] = useState<PageName>('home')
-  const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null)
-  const [selectedNewsletter, setSelectedNewsletter] = useState<Newsletter | null>(null)
+  // Initial loading screen — only on first mount, NOT on every route change
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -32,33 +30,29 @@ export default function PublicApp() {
     return () => clearTimeout(timer)
   }, [])
 
-  const navigate: NavigateFn = (p, data) => {
-    if (p === 'activity-detail' && data) setSelectedActivity(data as Activity)
-    if (p === 'newsletter-detail' && data) setSelectedNewsletter(data as Newsletter)
-    setPage(p)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
-
   if (loading) {
     return <LoadingScreen />
   }
 
   return (
-    <div className="public-wrapper">
-      <Navbar currentPage={page} navigate={navigate} />
-      <main>
-        {page === 'home' && <Home navigate={navigate} />}
-        {page === 'activities' && <Activities navigate={navigate} />}
-        {page === 'activity-detail' && selectedActivity && (
-          <ActivityDetail activity={selectedActivity} navigate={navigate} />
-        )}
-        {page === 'newsletters' && <Newsletters navigate={navigate} />}
-        {page === 'newsletter-detail' && selectedNewsletter && (
-          <NewsletterDetail newsletter={selectedNewsletter} navigate={navigate} />
-        )}
-        {page === 'committee' && <Committee />}
-      </main>
-      <Footer navigate={navigate} />
-    </div>
+    <HelmetProvider>
+      <div className="public-wrapper">
+        <ScrollToTop />
+        <Navbar />
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/activities" element={<Activities />} />
+            <Route path="/activities/:id" element={<ActivityDetail />} />
+            <Route path="/newsletters" element={<Newsletters />} />
+            <Route path="/newsletters/:id" element={<NewsletterDetail />} />
+            <Route path="/committee" element={<Committee />} />
+            {/* Fallback: redirect unknown sub-paths to home */}
+            <Route path="*" element={<Home />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
+    </HelmetProvider>
   )
 }
