@@ -1,6 +1,7 @@
 // ─── Sidebar ───────────────────────────────────────────────────────────────
 import { NavLink } from 'react-router-dom';
 import * as Icon from '../ui/Icons';
+import logo from '../../public/imports/a1.png';
 
 const NAV_ITEMS = [
   { to: '/admin/dashboard',   icon: <Icon.Dashboard size={18} />,   label: 'Dashboard'   },
@@ -23,7 +24,7 @@ export default function Sidebar({ isOpen, onClose }) {
         {/* Logo */}
         <div className="sidebar-logo">
           <div className="sidebar-logo-icon" aria-hidden="true">
-            <Icon.Star size={20} />
+            <img src={logo} alt="ASTHRA Logo" className="sidebar-logo-img" />
           </div>
           <div className="sidebar-logo-text">
             <span className="sidebar-logo-title">ASTHRA</span>

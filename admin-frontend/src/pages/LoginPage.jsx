@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import * as Icon from '../components/ui/Icons';
+import logo from '../public/imports/a1.png';
 
 export default function LoginPage() {
   const [username, setUsername] = useState('');
@@ -36,7 +37,7 @@ export default function LoginPage() {
         {/* Logo */}
         <div className="login-logo">
           <div className="login-logo-icon" aria-hidden="true">
-            <Icon.ShieldCheck size={28} />
+            <img src={logo} alt="ASTHRA Logo" className="login-logo-img" />
           </div>
           <div>
             <h1 className="login-title">ASTHRA Admin</h1>

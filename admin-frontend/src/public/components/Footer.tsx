@@ -31,7 +31,7 @@ export default function Footer() {
             </p>
             <div className="flex gap-3 mt-1">
               <a
-                href="https://instagram.com/asthra_cse"
+                href="https://www.instagram.com/aiml_aset/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-9 h-9 rounded-full bg-white/5 border border-white/8 flex items-center justify-center text-slate-500 hover:text-pink-400 hover:border-pink-400/30 hover:bg-pink-400/5 transition-all"
@@ -42,7 +42,7 @@ export default function Footer() {
                 </svg>
               </a>
               <a
-                href="mailto:asthra@cse.edu"
+                href="mailto:aiml2428.aset@gmail.com"
                 className="w-9 h-9 rounded-full bg-white/5 border border-white/8 flex items-center justify-center text-slate-500 hover:text-cyan-400 hover:border-cyan-400/30 hover:bg-cyan-400/5 transition-all"
                 aria-label="Email ASTHRA"
               >
@@ -74,20 +74,19 @@ export default function Footer() {
             <h4 className="section-label mb-6">Contact</h4>
             <div className="flex flex-col gap-3 text-slate-500 text-sm">
               <p>Dept. of Artificial Intelligence &amp; Machine Learning</p>
-              <p>Engineering Block A, Room 204</p>
               <a
-                href="mailto:asthra@cse.edu"
+                href="mailto:aiml2428.aset@gmail.com"
                 className="hover:text-cyan-400 transition-colors"
               >
-                asthra@cse.edu
+                aiml2428.aset@gmail.com
               </a>
               <a
-                href="https://instagram.com/asthra_cse"
+                href="https://www.instagram.com/aiml_aset/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-pink-400 transition-colors"
               >
-                @asthra_cse
+                @aiml_aset
               </a>
             </div>
           </div>

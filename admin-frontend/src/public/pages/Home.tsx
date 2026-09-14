@@ -163,8 +163,8 @@ export default function Home() {
             className="font-orbitron font-900 text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-[0.95] tracking-tight animate-fade-in-up"
             style={{ animationDelay: '0.45s' }}
           >
-            <span className="block text-white">ADVANCING</span>
-            <span className="block gradient-text mt-1">THE FRONTIER</span>
+            <span className="block text-white">UNLEASHING</span>
+            <span className="block gradient-text mt-1">POTENTIAL</span>
           </h1>
 
           {/* Tagline */}
@@ -209,21 +209,37 @@ export default function Home() {
             <div className="flex flex-col gap-6">
               <span className="section-label">Our Mission</span>
               <h2 className="section-heading text-4xl md:text-5xl text-white">
-                Engineering<br />
-                <span className="gradient-text">excellence</span>,<br />
-                cultivated together.
+                Building <span className="gradient-text">excellence</span>,<br />
+                united.
               </h2>
-              <p className="text-slate-400 text-base leading-relaxed">
-                ASTHRA exists to empower students of Artificial Intelligence &amp; Machine Learning to
-                explore the full depth of their potential. Through events, workshops,
-                publications, and community building, we create an environment where
-                technical rigor and creative ambition reinforce each other.
-              </p>
-              <p className="text-slate-400 text-base leading-relaxed">
-                We believe the best engineers are curious, collaborative, and driven by a
-                genuine desire to build things that matter — and our mission is to help
-                every member discover that within themselves.
-              </p>
+              <div className="flex flex-col gap-4">
+                <div className="flex items-start gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-cyan-400/20 transition-all">
+                  <span className="flex-shrink-0 font-mono text-xs font-bold text-cyan-400 bg-cyan-400/10 border border-cyan-400/20 rounded-lg w-7 h-7 flex items-center justify-center mt-0.5">
+                    01
+                  </span>
+                  <p className="text-slate-400 text-sm md:text-base leading-relaxed">
+                    To equip students with advanced AI and ML skills to solve evolving complexities, driving sustainable and high-quality livelihoods.
+                  </p>
+                </div>
+
+                <div className="flex items-start gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-violet-400/20 transition-all">
+                  <span className="flex-shrink-0 font-mono text-xs font-bold text-violet-400 bg-violet-400/10 border border-violet-400/20 rounded-lg w-7 h-7 flex items-center justify-center mt-0.5">
+                    02
+                  </span>
+                  <p className="text-slate-400 text-sm md:text-base leading-relaxed">
+                    To foster a responsive learning space that encourages research, innovation, and entrepreneurial thinking in AI and ML, empowering students to create impactful solutions.
+                  </p>
+                </div>
+
+                <div className="flex items-start gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-pink-400/20 transition-all">
+                  <span className="flex-shrink-0 font-mono text-xs font-bold text-pink-400 bg-pink-400/10 border border-pink-400/20 rounded-lg w-7 h-7 flex items-center justify-center mt-0.5">
+                    03
+                  </span>
+                  <p className="text-slate-400 text-sm md:text-base leading-relaxed">
+                    To nurture ethical and proficient AI and ML professionals who contribute to societal welfare with integrity and responsibility.
+                  </p>
+                </div>
+              </div>
             </div>
 
             {/* Visual */}
@@ -256,7 +272,7 @@ export default function Home() {
       </section>
 
       {/* ── VISION ───────────────────────────────────────────────────── */}
-      <section className="py-28 relative">
+      <section className="py-20 lg:py-24 relative">
         <div
           className="absolute inset-0 pointer-events-none opacity-40"
           style={{
@@ -265,45 +281,39 @@ export default function Home() {
           aria-hidden="true"
         />
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div ref={visionRef} className="reveal grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div ref={visionRef} className="reveal grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* Visual first on desktop */}
-            <div className="lg:order-first order-last relative">
-              <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-[#0a1228]">
+            <div className="lg:order-first order-last relative max-w-lg lg:max-w-none w-full mx-auto">
+              <div className="aspect-[16/10] max-h-[340px] rounded-2xl overflow-hidden bg-[#0a1228] relative">
                 <img
                   src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=600&fit=crop&auto=format"
                   alt="Vision — technology landscape"
                   className="w-full h-full object-cover opacity-60"
                 />
                 <div className="absolute inset-0 bg-gradient-to-tr from-[#040814]/70 via-transparent to-violet-900/30" />
-                <div className="absolute bottom-6 left-6 right-6">
-                  <div className="font-mono text-xs text-cyan-400 mb-1 tracking-widest">VISION 2030</div>
-                  <div className="font-orbitron text-white text-sm font-600">
-                    A department defined by its graduates&apos; impact on the world.
+                <div className="absolute bottom-5 left-5 right-5">
+                  <div className="font-mono text-xs text-cyan-400 mb-1 tracking-widest">VISION</div>
+                  <div className="font-orbitron text-white text-xs sm:text-sm font-600">
+                    Advancing sustainable technological excellence.
                   </div>
                 </div>
               </div>
-              <div className="absolute -top-3 -right-3 w-12 h-12 border-t-2 border-r-2 border-violet-500/30 rounded-tr-lg" />
-              <div className="absolute -bottom-3 -left-3 w-12 h-12 border-b-2 border-l-2 border-cyan-400/20 rounded-bl-lg" />
+              <div className="absolute -top-2.5 -right-2.5 w-10 h-10 border-t-2 border-r-2 border-violet-500/30 rounded-tr-lg" />
+              <div className="absolute -bottom-2.5 -left-2.5 w-10 h-10 border-b-2 border-l-2 border-cyan-400/20 rounded-bl-lg" />
             </div>
 
             {/* Text */}
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-6 max-w-xl">
               <span className="section-label">Our Vision</span>
-              <h2 className="section-heading text-4xl md:text-5xl text-white">
-                Shaping the next<br />
-                generation of<br />
-                <span className="gradient-text-warm">technologists.</span>
+              <h2 className="section-heading text-3xl sm:text-4xl md:text-5xl text-white leading-tight">
+                Cultivating ethical <span className="gradient-text-warm">AI pioneers</span><br />
+                for a sustainable tomorrow.
               </h2>
-              <p className="text-slate-400 text-base leading-relaxed">
-                We envision a future where ASTHRA graduates lead transformative technology
-                companies, drive breakthrough research, and contribute to solving the
-                world&apos;s most complex challenges — not despite their education, but
-                because of it.
-              </p>
-              <p className="text-slate-400 text-base leading-relaxed">
-                Our vision is a department synonymous with bold thinking, ethical practice,
-                and a commitment to using technology as a force for genuine human good.
-              </p>
+              <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/5 border-l-2 border-l-amber-400/50">
+                <p className="text-slate-300 text-sm md:text-base leading-relaxed">
+                  To cultivate highly ethical and innovative AI and ML professionals via superior education, proficiency-based learning, advanced training, and impactful research, promoting sustainable technological advancements with competence and integrity.
+                </p>
+              </div>
               <button onClick={() => navigate('/committee')} className="btn-outline self-start">
                 Meet the Team
               </button>

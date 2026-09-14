@@ -18,15 +18,14 @@ async def admin_login_controller(db: Session, user: loginRequest):
     token = generate_session_token({"admin_id": admin.id})
 
     # Step 4: Return JSON response and attach the session cookie
-    # samesite="lax", secure=False is correct for local dev over http://localhost
-    # Change to samesite="none", secure=True in production (cross-origin frontend)
+    # samesite="none", secure=True is required for cross-origin cookies between Vercel and Cloudflare Tunnel
     response = JSONResponse(content={"message": "Login successful"}, status_code=200)
     response.set_cookie(
         key="admin_session",
         value=token,
         httponly=True,
-        samesite="lax",
-        secure=False
+        samesite="none",
+        secure=True
     )
     return response
 
@@ -34,6 +33,10 @@ async def admin_login_controller(db: Session, user: loginRequest):
 async def admin_logout_controller():
     # Clear the session cookie and return a JSON confirmation
     response = JSONResponse(content={"message": "Logged out successfully"}, status_code=200)
-    response.delete_cookie(key="admin_session")
+    response.delete_cookie(
+        key="admin_session",
+        samesite="none",
+        secure=True
+    )
     return response
 
