@@ -40,6 +40,9 @@ def upload_file(file: UploadFile, folder: str) -> str:
             file.file,                   # the file-like object
             folder=folder,               # e.g. "activities/thumbnails"
             resource_type=resource_type,  # "image" or "raw"
+            use_filename=True,
+            unique_filename=True,
+            filename_override=file.filename,
         )
         return result["secure_url"]
     except Exception as e:
